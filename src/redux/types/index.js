@@ -1,0 +1,3 @@
+export const ADD_ITEMS = 'ADD_ITEMS'
+export const ADD_ITEMS_SUCCESSFUL = 'ADD_ITEMS_SUCCESSFUL'
+export const ADD_ITEMS_WRONG = 'ADD_ITEMS_WRONG'
