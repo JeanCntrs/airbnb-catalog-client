@@ -11,8 +11,11 @@ import {
     CardContent,
     Typography,
     Box,
-    Avatar
+    Avatar,
+    Button
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import avatars from '../../utils/avatars';
 import moment from 'moment';
 
 const useStyles = makeStyles({
@@ -35,11 +38,18 @@ const useStyles = makeStyles({
     },
     date: {
         color: 'rgba(0, 0, 0, 0.54)'
+    },
+    center: {
+        textAlign: 'center'
+    },
+    link: {
+        textDecoration: 'none'
     }
 });
 
 const ItemCard = ({ item }) => {
     const classes = useStyles();
+    const num = Math.floor((Math.random() * avatars.length - 1) + 1);
 
     return (
         <Grid item xs={12} sm={6} md={4}>
@@ -60,13 +70,21 @@ const ItemCard = ({ item }) => {
                             {item.Address.street} {item.Address.country}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
-                            {item.summary ? item.summary.length > 256 ? `${item.summary.substr(1, 256)}...` : item.summary : 'No summary.'}
+                            {
+                                item.summary
+                                    ? item.summary.length > 256
+                                        ? `${item.summary.substr(0, 256)}...`
+                                        : item.summary
+                                    : 'No summary.'
+                            }
                         </Typography>
                     </CardContent>
                 </CardActionArea>
                 <CardActions className={classes.cardActions}>
                     <Box className={classes.author}>
-                        <Avatar />
+                        {
+                            item.Reviews.length > 0 ? <Avatar src={avatars[num].imageUrl} /> : <Avatar />
+                        }
                         <Box ml={2}>
                             <Typography variant="subtitle2" component="p">
                                 {
@@ -75,8 +93,11 @@ const ItemCard = ({ item }) => {
                                         : 'No reviews'
                                 }
                             </Typography>
-                            <Typography variant="subtitle2" component="p" color="textSecondary">
-
+                            <Typography variant="body2" component="p" color="textSecondary">
+                                {
+                                    item.Reviews.length > 0 &&
+                                        item.Reviews[0]?.comments.length > 38 ? `${item.Reviews[0].comments.substr(0, 38)}...` : item.Reviews[0]?.comments
+                                }
                             </Typography>
                         </Box>
                     </Box>
@@ -84,6 +105,11 @@ const ItemCard = ({ item }) => {
                         <BookmarkBorder />
                     </Box>
                 </CardActions>
+                <Box className={classes.center}>
+                    <Link to={`/item/detail/${item._id}`} className={classes.link}>
+                        <Button size="small" color="primary">See More</Button>
+                    </Link>
+                </Box>
             </Card>
         </Grid>
     );

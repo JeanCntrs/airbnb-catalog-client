@@ -5,11 +5,11 @@ import {
     ADD_ITEMS_WRONG
 } from '../types';
 
-export const addItemsAction = () => {
+export const addItemsAction = (page, search) => {
     return async dispatch => {
         dispatch(addItems());
         try {
-            const response = await axiosClient.get('/item/list?page=1')
+            const response = await axiosClient.get(`/item/list?page=${page}&search=${search}`)
             console.log(response.data)
             dispatch(addItemsSuccessful(response.data))
         } catch (error) {
