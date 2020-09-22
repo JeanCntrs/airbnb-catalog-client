@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Pagination from '@material-ui/lab/Pagination';
@@ -48,50 +50,84 @@ const ItemList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const items = useSelector(state => state.itemsState.items);
+    const totalPages = useSelector(state => state.itemsState.totalPages);
+    const currentPage = useSelector(state => state.itemsState.currentPage);
+    const loading = useSelector(state => state.itemsState.loading);
+    const error = useSelector(state => state.itemsState.error);
 
-    const [search, setSearch] = useState('duplex');
-    const [page, setPage] = useState(1);
+    const [params, setParams] = useState({ page: currentPage, search: '' });
+    console.log(params)
+    console.log(items)
 
-    const handleSearchChange = event => {
-        setSearch(event.target.value);
-    }
+    const debounced = useDebouncedCallback(
+        useCallback((value) => {
+            setParams({ page: 1, search: value });
+        }, []),
+        700,
+        // The maximum time func is allowed to be delayed before it's invoked
+        { maxWait: 2000 }
+    );
 
     const handlePageChange = (event, value) => {
-        setPage(value);
+        setParams({ ...params, page: value });
     };
 
     const addItems = (page, search) => dispatch(addItemsAction(page, search))
 
     useEffect(() => {
-        addItems(page, search);
-    }, [])
+        addItems(params.page, params.search);
+        // eslint-disable-next-line
+    }, [params])
 
     return (
         <Container maxWidth="lg" className={classes.Container}>
-            <Box className={classes.center}>
-                <Paper component="form" className={classes.root}>
-                    <IconButton className={classes.iconButton} aria-label="menu">
-                        <MenuIcon />
-                    </IconButton>
-                    <InputBase
-                        className={classes.input}
-                        placeholder="Find your lodging"
-                        inputProps={{ 'aria-label': 'Find your lodging' }}
-                        onChange={handleSearchChange}
-                    />
-                    <IconButton className={classes.iconButton} aria-label="search">
-                        <SearchIcon />
-                    </IconButton>
-                </Paper>
-            </Box>
-            <Grid container spacing={3}>
-                {
-                    items && items.map(item => <ItemCard key={item._id} item={item} />)
-                }
-            </Grid>
-            <Box my={4} className={classes.paginationContainer}>
-                <Pagination count={10} page={page} onChange={handlePageChange} />
-            </Box>
+            {
+                error
+                    ? <Typography variant="h5" color="textSecondary">
+                        Error...
+                    </Typography>
+                    : <>
+                        <Box className={classes.center}>
+                            <Paper component="form" className={classes.root}>
+                                <IconButton className={classes.iconButton} aria-label="menu">
+                                    <MenuIcon />
+                                </IconButton>
+                                <InputBase
+                                    className={classes.input}
+                                    placeholder="Find your lodging"
+                                    inputProps={{ 'aria-label': 'Find your lodging' }}
+                                    onChange={event => debounced.callback(event.target.value)}
+                                />
+                                <IconButton className={classes.iconButton} aria-label="search">
+                                    <SearchIcon />
+                                </IconButton>
+                            </Paper>
+                        </Box>
+                        {
+                            items === 0
+                                ? <Typography variant="h5" color="textSecondary" className={classes.center}>
+                                    No information found.
+                                </Typography>
+                                : <>
+                                    <Grid container spacing={3}>
+                                        {
+                                            items.length > 0 && !loading
+                                                ? items.map(item => <ItemCard key={item._id} item={item} />)
+                                                : <Typography variant="h5" color="textSecondary">
+                                                    Cargando...
+                                                </Typography>
+                                        }
+                                    </Grid>
+                                    {
+                                        items.length > 0 && !loading &&
+                                        <Box my={4} className={classes.paginationContainer}>
+                                            <Pagination count={totalPages} page={params.page} onChange={handlePageChange} />
+                                        </Box>
+                                    }
+                                </>
+                        }
+                    </>
+            }
         </Container>
     );
 }
