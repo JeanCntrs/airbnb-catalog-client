@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { makeStyles } from '@material-ui/core/styles';
+import { CardLoader } from '../../utils/loaders';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +13,7 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import Error from '../Error';
 
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -52,10 +54,11 @@ const ItemList = () => {
     const items = useSelector(state => state.itemsState.items);
     const totalPages = useSelector(state => state.itemsState.totalPages);
     const currentPage = useSelector(state => state.itemsState.currentPage);
+    const currentSearch = useSelector(state => state.itemsState.currentSearch);
     const loading = useSelector(state => state.itemsState.loading);
     const error = useSelector(state => state.itemsState.error);
 
-    const [params, setParams] = useState({ page: currentPage, search: '' });
+    const [params, setParams] = useState({ page: currentPage, search: currentSearch });
     console.log(params)
     console.log(items)
 
@@ -83,9 +86,7 @@ const ItemList = () => {
         <Container maxWidth="lg" className={classes.Container}>
             {
                 error
-                    ? <Typography variant="h5" color="textSecondary">
-                        Error...
-                    </Typography>
+                    ? <Error code='503' />
                     : <>
                         <Box className={classes.center}>
                             <Paper component="form" className={classes.root}>
@@ -96,6 +97,7 @@ const ItemList = () => {
                                     className={classes.input}
                                     placeholder="Find your lodging"
                                     inputProps={{ 'aria-label': 'Find your lodging' }}
+                                    defaultValue={params.search}
                                     onChange={event => debounced.callback(event.target.value)}
                                 />
                                 <IconButton className={classes.iconButton} aria-label="search">
@@ -113,9 +115,7 @@ const ItemList = () => {
                                         {
                                             items.length > 0 && !loading
                                                 ? items.map(item => <ItemCard key={item._id} item={item} />)
-                                                : <Typography variant="h5" color="textSecondary">
-                                                    Cargando...
-                                                </Typography>
+                                                : [1].map(() => <CardLoader />)
                                         }
                                     </Grid>
                                     {

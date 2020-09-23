@@ -4,7 +4,7 @@ import ItemList from '../components/items/ItemList';
 
 const Catalogue = () => {
     return (
-        <MainLayout pageTitle="Catalogue">
+        <MainLayout pageTitle="Lodgings">
             <ItemList />
         </MainLayout>
     );

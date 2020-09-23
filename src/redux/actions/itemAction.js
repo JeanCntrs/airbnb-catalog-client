@@ -3,7 +3,7 @@ import {
     ADD_ITEMS,
     ADD_ITEMS_SUCCESSFUL,
     ADD_ITEMS_WRONG,
-    SET_CURRENT_PAGE
+    SET_CURRENT_VALUES
 } from '../types';
 
 export const addItemsAction = (page, search) => {
@@ -15,7 +15,7 @@ export const addItemsAction = (page, search) => {
                 return dispatch(addItemsSuccessful(0));
 
             dispatch(addItemsSuccessful(response.data));
-            dispatch(setCurrentPage(page));
+            dispatch(setCurrentValues({ page, search }));
         } catch (error) {
             console.log(error);
             dispatch(addItemsWrong());
@@ -36,7 +36,7 @@ const addItemsWrong = () => ({
     type: ADD_ITEMS_WRONG
 });
 
-const setCurrentPage = currentPage => ({
-    type: SET_CURRENT_PAGE,
-    payload: currentPage
+const setCurrentValues = currentValues => ({
+    type: SET_CURRENT_VALUES,
+    payload: currentValues
 });

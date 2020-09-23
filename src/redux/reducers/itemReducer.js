@@ -2,13 +2,14 @@ import {
     ADD_ITEMS,
     ADD_ITEMS_SUCCESSFUL,
     ADD_ITEMS_WRONG,
-    SET_CURRENT_PAGE
+    SET_CURRENT_VALUES
 } from '../types';
 
 const initialState = {
     items: [],
     totalPages: 1,
     currentPage: 1,
+    currentSearch: '',
     loading: false,
     error: false,
 }
@@ -33,10 +34,11 @@ export default function (state = initialState, action) {
                 error: true,
                 loading: false
             }
-        case SET_CURRENT_PAGE:
+        case SET_CURRENT_VALUES:
             return {
                 ...state,
-                currentPage: action.payload
+                currentPage: action.payload.page,
+                currentSearch: action.payload.search,
             }
 
         default:
