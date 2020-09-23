@@ -115,7 +115,7 @@ const ItemList = () => {
                                         {
                                             items.length > 0 && !loading
                                                 ? items.map(item => <ItemCard key={item._id} item={item} />)
-                                                : [1].map(() => <CardLoader />)
+                                                : <CardLoader />
                                         }
                                     </Grid>
                                     {

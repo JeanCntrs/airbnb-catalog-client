@@ -19,15 +19,12 @@ export const CardLoader = () => {
             speed={speed}
             width={columns * coverWidthWithPadding}
             height={rows * coverHeightWithPadding}
-            primaryColor="#242b34"
-            secondaryColor="#343d4c"
-
         >
             {covers.map((g, i) => {
                 let vy = Math.floor(i / columns) * coverHeightWithPadding + initial
                 let vx = (i * coverWidthWithPadding) % (columns * coverWidthWithPadding)
                 return (
-                    <rect
+                    <rect key={i}
                         x={vx + 15}
                         y={vy}
                         rx="0"

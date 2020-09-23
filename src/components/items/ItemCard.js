@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Star, BookmarkBorder } from '@material-ui/icons';
 import {
     Grid,
     Card,
@@ -15,6 +14,8 @@ import {
     Button
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import Star from '@material-ui/icons/Star'
+import BookmarkBorder from '@material-ui/icons/BookmarkBorder'
 import avatars from '../../utils/avatars';
 import moment from 'moment';
 
@@ -67,7 +68,7 @@ const ItemCard = ({ item }) => {
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                            {item.Address.street} {item.Address.country}
+                            {item?.Address?.street} {item?.Address?.country}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                             {
