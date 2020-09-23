@@ -1,3 +1,12 @@
+# Airbnb Catalog Client
+
+## Steps
+ 
+1. Open terminal inside project root path.
+2. Execute 'yarn' or 'npm' i commands to install node_modules.
+3. Set environment variable with backend url.
+4. Execute 'yarn start' or 'npm start' to start project.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

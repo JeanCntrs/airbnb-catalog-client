@@ -13,14 +13,13 @@ export const addItemsAction = (page, search) => {
     return async dispatch => {
         dispatch(addItems());
         try {
-            const response = await axiosClient.get(`/item/list?page=${page}&search=${search}`)
+            const response = await axiosClient.get(`/item/list?page=${page}&search=${search}`);
             if (response.data === null)
                 return dispatch(addItemsSuccessful(0));
 
             dispatch(addItemsSuccessful(response.data));
             dispatch(setCurrentValues({ page, search }));
         } catch (error) {
-            console.log(error);
             dispatch(addItemsWrong());
         }
     }
@@ -48,11 +47,9 @@ export const addDetailItemAction = id => {
     return async dispatch => {
         dispatch(addDetailItem());
         try {
-            const response = await axiosClient.get(`/item/detail?id=${id}`)
-            console.log(response.data)
+            const response = await axiosClient.get(`/item/detail?id=${id}`);
             dispatch(addDetailItemSuccessful(response.data));
         } catch (error) {
-            console.log(error);
             dispatch(addDetailItemWrong());
         }
     }

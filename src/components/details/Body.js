@@ -43,10 +43,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Body = ({ item }) => {
-    console.log(item)
     const classes = useStyles();
     const num = Math.round(Math.random() * (5 - 3) + 3);
-    console.log(num)
 
     return (
         <Container maxWidth="lg" >

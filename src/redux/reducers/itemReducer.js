@@ -32,7 +32,8 @@ export default function (state = initialState, action) {
                 ...state,
                 items: action.payload,
                 totalPages: action.payload[0]?.pages,
-                loading: false
+                loading: false,
+                error: false
             }
         case ADD_ITEMS_WRONG:
             return {
@@ -55,7 +56,8 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 detailItem: action.payload,
-                detailLoading: false
+                detailLoading: false,
+                detailError: false
             }
         case ADD_DETAIL_ITEM_WRONG:
             return {

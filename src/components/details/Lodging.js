@@ -25,7 +25,6 @@ const Lodging = ({ match: { params: { id } } }) => {
     const detailLoading = useSelector(state => state.itemsState.detailLoading);
     const detailError = useSelector(state => state.itemsState.detailError);
 
-    console.log(detailItem)
     const addDetailItem = id => dispatch(addDetailItemAction(id));
 
     useEffect(() => {

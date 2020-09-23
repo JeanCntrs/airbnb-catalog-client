@@ -59,8 +59,6 @@ const ItemList = () => {
     const error = useSelector(state => state.itemsState.error);
 
     const [params, setParams] = useState({ page: currentPage, search: currentSearch });
-    console.log(params)
-    console.log(items)
 
     const debounced = useDebouncedCallback(
         useCallback((value) => {
